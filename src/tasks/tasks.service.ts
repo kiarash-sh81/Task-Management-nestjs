@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { TaskStatus } from './tasks-status.enum';
 import {v4 as uuid} from 'uuid';
 import { CreateTaskDto } from './dto/create-task.dto';
@@ -11,8 +11,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 @Injectable()
 export class TasksService {
     constructor(
-        @InjectRepository(TaskRepository)
-        private taskRepository: TaskRepository
+        @InjectRepository(Task)
+        private taskRepository: TaskRepository,
         ) {}
 
     // getAllTasks(): Task[] {
@@ -37,11 +37,11 @@ export class TasksService {
     //     return tasks;
     // }
 
-    async getTaskById(id): Promise<Task> {
+    async getTaskById(id: string): Promise<Task> {
         const found = await this.taskRepository.findOne({where:{id}});
 
         if(!found){
-            throw new NotFoundException("تسکی با چنین مشخصاتی یافت نشد"); 
+            throw new NotFoundException("تسکی با این مشخصات یافت نشد"); 
         }
 
         return found;

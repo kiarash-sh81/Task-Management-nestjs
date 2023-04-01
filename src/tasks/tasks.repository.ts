@@ -3,7 +3,11 @@ import { EntityRepository, Repository } from "typeorm";
 import { Task } from "./tasks.entity";
 
 
-@EntityRepository(Task)
-export class TaskRepository extends Repository<Task> {
+// @EntityRepository(Task)
+// export class TaskRepository extends Repository<Task> {
     
+// }
+
+export class TaskRepository extends Repository<Task>{
+    this: Repository<Task>;
 }

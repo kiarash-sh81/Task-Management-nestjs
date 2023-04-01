@@ -12,11 +12,11 @@ import { TypeOrmModule } from "@nestjs/typeorm"
       host: "localhost",
       port: 5432,
       username: "postgres",
-      password: "kiarash1381",
-      database: "task-managment",
+      password: "postgres",
+      database: "task-management",
       autoLoadEntities: true,
       synchronize: true,
-    })
+    }),
   ],
 })
 export class AppModule {}
