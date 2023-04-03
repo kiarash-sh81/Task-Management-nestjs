@@ -1,6 +1,8 @@
 /* eslint-disable prettier/prettier */
 import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards, } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { GetUser } from 'src/auth/get-user.decorator';
+import { User } from 'src/auth/user.entity';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { getTaskFillterDto } from './dto/get-task-fillter.dto';
 import { updateTaskDto } from './dto/update-task.dto';
@@ -13,28 +15,28 @@ export class TasksController {
     constructor(private taskService: TasksService) {}
 
     @Get()
-    getAllTasks(@Query() fillterDto: getTaskFillterDto): Promise<Task[]> {
-        return this.taskService.getAllTasks(fillterDto);
+    getAllTasks(@Query() fillterDto: getTaskFillterDto , @GetUser() user: User): Promise<Task[]> {
+        return this.taskService.getAllTasks(fillterDto , user);
     }
 
     @Get("/:id")
-    getTaskById(@Param("id") id: string): Promise<Task>{
-        return this.taskService.getTaskById(id)
+    getTaskById(@Param("id") id: string, @GetUser() user: User): Promise<Task>{
+        return this.taskService.getTaskById(id, user)
     }
 
     @Post()
-    createTask(@Body() createTaskDto: CreateTaskDto): Promise<Task> {
-        return this.taskService.createTask(createTaskDto);
+    createTask(@Body() createTaskDto: CreateTaskDto , @GetUser() user: User): Promise<Task> {
+        return this.taskService.createTask(createTaskDto , user);
     }
 
     @Delete("/:id")
-    deleteTaskById(@Param("id") id: string): Promise<void> {
-        return this.taskService.deleteTaskById(id);
+    deleteTaskById(@Param("id") id: string, @GetUser() user: User): Promise<void> {
+        return this.taskService.deleteTaskById(id , user);
     }
 
     @Patch("/:id/status")
-    updateTaskStatus(@Param("id") id: string , @Body() updateTaskDto: updateTaskDto): Promise<Task>{
+    updateTaskStatus(@Param("id") id: string , @Body() updateTaskDto: updateTaskDto , @GetUser() user: User): Promise<Task>{
         const { status } = updateTaskDto
-        return this.taskService.updateTaskById(id , status);
+        return this.taskService.updateTaskById(id , status , user);
     }
 }
